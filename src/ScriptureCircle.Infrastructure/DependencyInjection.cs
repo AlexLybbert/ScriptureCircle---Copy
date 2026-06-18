@@ -23,7 +23,9 @@ public static class DependencyInjection
             }
             else
             {
-                var connectionString = NormalizePostgresConnectionString(configuration.GetConnectionString("DefaultConnection"));
+                var connectionString = NormalizePostgresConnectionString(
+                    configuration["DATABASE_URL"] ?? configuration.GetConnectionString("DefaultConnection"));
+
                 options.UseNpgsql(connectionString);
             }
         });
@@ -41,7 +43,7 @@ public static class DependencyInjection
     {
         if (string.IsNullOrWhiteSpace(connectionString))
         {
-            throw new InvalidOperationException("ConnectionStrings:DefaultConnection is required when using PostgreSQL.");
+            throw new InvalidOperationException("DATABASE_URL or ConnectionStrings:DefaultConnection is required when using PostgreSQL.");
         }
 
         if (!Uri.TryCreate(connectionString, UriKind.Absolute, out var uri) ||
