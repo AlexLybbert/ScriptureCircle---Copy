@@ -23,8 +23,7 @@ public static class DependencyInjection
             }
             else
             {
-                var connectionString = NormalizePostgresConnectionString(
-                    configuration["DATABASE_URL"] ?? configuration.GetConnectionString("DefaultConnection"));
+                var connectionString = NormalizePostgresConnectionString(GetPostgresConnectionString(configuration));
 
                 options.UseNpgsql(connectionString);
             }
@@ -39,11 +38,21 @@ public static class DependencyInjection
         return services;
     }
 
+    private static string? GetPostgresConnectionString(IConfiguration configuration)
+    {
+        return configuration["DATABASE_URL"]
+            ?? configuration["POSTGRES_URL"]
+            ?? configuration["POSTGRES_CONNECTION_STRING"]
+            ?? configuration["DATABASE_CONNECTION_STRING"]
+            ?? configuration.GetConnectionString("DefaultConnection");
+    }
+
     private static string NormalizePostgresConnectionString(string? connectionString)
     {
         if (string.IsNullOrWhiteSpace(connectionString))
         {
-            throw new InvalidOperationException("DATABASE_URL or ConnectionStrings:DefaultConnection is required when using PostgreSQL.");
+            throw new InvalidOperationException(
+                "PostgreSQL is enabled but no connection string is configured. Set DATABASE_URL, POSTGRES_URL, POSTGRES_CONNECTION_STRING, DATABASE_CONNECTION_STRING, or ConnectionStrings:DefaultConnection. On Render, sync render.yaml as a Blueprint or add DATABASE_URL manually from the scripture-circle-db Internal Database URL.");
         }
 
         if (!Uri.TryCreate(connectionString, UriKind.Absolute, out var uri) ||
@@ -56,7 +65,8 @@ public static class DependencyInjection
         var username = Uri.UnescapeDataString(credentials[0]);
         var password = credentials.Length > 1 ? Uri.UnescapeDataString(credentials[1]) : string.Empty;
         var database = Uri.UnescapeDataString(uri.AbsolutePath.TrimStart('/'));
+        var port = uri.IsDefaultPort ? 5432 : uri.Port;
 
-        return $"Host={uri.Host};Port={uri.Port};Database={database};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true";
+        return $"Host={uri.Host};Port={port};Database={database};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true";
     }
 }
