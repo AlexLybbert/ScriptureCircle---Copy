@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: scripture-circle-api
+    runtime: docker
+    dockerfilePath: Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS
+        value: http://0.0.0.0:10000
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: scripture-circle-db
+          property: connectionString
+      - key: Jwt__Issuer
+        value: ScriptureCircle
+      - key: Jwt__Audience
+        value: ScriptureCircle
+      - key: Jwt__SigningKey
+        generateValue: true
+      - key: ClientOrigins__0
+        sync: false
+
+  - type: web
+    name: scripture-circle-client
+    runtime: static
+    buildCommand: cd client && npm ci && npm run build
+    staticPublishPath: client/dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false
+
+databases:
+  - name: scripture-circle-db
+    plan: free
+    databaseName: scripture_circle
+    user: scripture_circle

@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ScriptureCircle.Infrastructure.Data;
 
 #nullable disable
@@ -12,7 +12,7 @@ using ScriptureCircle.Infrastructure.Data;
 namespace ScriptureCircle.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260604221746_InitialCreate")]
+    [Migration("20260618030518_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,48 +20,48 @@ namespace ScriptureCircle.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.1")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "10.0.4")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("ScriptureCircle.Domain.Entities.Annotation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("HighlightStyle")
                         .IsRequired()
                         .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("character varying(32)");
 
                     b.Property<string>("NoteHtml")
                         .HasMaxLength(16000)
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("character varying(16000)");
 
                     b.Property<string>("NotePlainText")
                         .HasMaxLength(8000)
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("character varying(8000)");
 
                     b.Property<string>("ShareSlug")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Visibility")
                         .IsRequired()
                         .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("character varying(32)");
 
                     b.HasKey("Id");
 
@@ -77,15 +77,15 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("AnnotationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Label")
                         .IsRequired()
                         .HasMaxLength(160)
-                        .HasColumnType("nvarchar(160)");
+                        .HasColumnType("character varying(160)");
 
                     b.HasKey("Id");
 
@@ -97,10 +97,10 @@ namespace ScriptureCircle.Infrastructure.Migrations
             modelBuilder.Entity("ScriptureCircle.Domain.Entities.AnnotationTag", b =>
                 {
                     b.Property<Guid>("AnnotationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("AnnotationId", "TagId");
 
@@ -113,29 +113,29 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
+                        .HasColumnType("character varying(120)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProfileSlug")
                         .IsRequired()
                         .HasMaxLength(140)
-                        .HasColumnType("nvarchar(140)");
+                        .HasColumnType("character varying(140)");
 
                     b.HasKey("Id");
 
@@ -152,32 +152,32 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(160)
-                        .HasColumnType("nvarchar(160)");
+                        .HasColumnType("character varying(160)");
 
                     b.Property<string>("BookId")
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<int?>("ChapterNumber")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<string>("SourceId")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("VolumeId")
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.HasKey("Id");
 
@@ -188,26 +188,26 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Summary")
                         .IsRequired()
                         .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)");
+                        .HasColumnType("character varying(4000)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(160)
-                        .HasColumnType("nvarchar(160)");
+                        .HasColumnType("character varying(160)");
 
                     b.HasKey("Id");
 
@@ -220,24 +220,24 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)");
+                        .HasColumnType("character varying(4000)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -250,31 +250,31 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("ShareSlug")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(160)
-                        .HasColumnType("nvarchar(160)");
+                        .HasColumnType("character varying(160)");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("character varying(32)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -289,13 +289,13 @@ namespace ScriptureCircle.Infrastructure.Migrations
             modelBuilder.Entity("ScriptureCircle.Domain.Entities.NotebookAnnotation", b =>
                 {
                     b.Property<Guid>("NotebookId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("AnnotationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("SortOrder")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("NotebookId", "AnnotationId");
 
@@ -307,13 +307,13 @@ namespace ScriptureCircle.Infrastructure.Migrations
             modelBuilder.Entity("ScriptureCircle.Domain.Entities.Subscription", b =>
                 {
                     b.Property<Guid>("SubscriberUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("CreatorUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("SubscriberUserId", "CreatorUserId");
 
@@ -326,15 +326,15 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("character varying(80)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -348,29 +348,29 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset?>("EndsAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
+                        .HasColumnType("character varying(120)");
 
                     b.Property<string>("Plan")
                         .IsRequired()
                         .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("character varying(80)");
 
                     b.Property<DateTimeOffset>("StartedAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -391,31 +391,31 @@ namespace ScriptureCircle.Infrastructure.Migrations
                     b.OwnsOne("ScriptureCircle.Domain.Entities.ScriptureReference", "Reference", b1 =>
                         {
                             b1.Property<Guid>("AnnotationId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("uuid");
 
                             b1.Property<string>("BookId")
                                 .IsRequired()
                                 .HasMaxLength(80)
-                                .HasColumnType("nvarchar(80)");
+                                .HasColumnType("character varying(80)");
 
                             b1.Property<string>("BookTitle")
                                 .IsRequired()
                                 .HasMaxLength(160)
-                                .HasColumnType("nvarchar(160)");
+                                .HasColumnType("character varying(160)");
 
                             b1.Property<int>("Chapter")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int?>("VerseEnd")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int?>("VerseStart")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<string>("VolumeId")
                                 .IsRequired()
                                 .HasMaxLength(80)
-                                .HasColumnType("nvarchar(80)");
+                                .HasColumnType("character varying(80)");
 
                             b1.HasKey("AnnotationId");
 
@@ -428,38 +428,38 @@ namespace ScriptureCircle.Infrastructure.Migrations
                     b.OwnsOne("ScriptureCircle.Domain.Entities.ContentAnchor", "ContentAnchor", b1 =>
                         {
                             b1.Property<Guid>("AnnotationId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("uuid");
 
                             b1.Property<string>("AnchorType")
                                 .IsRequired()
                                 .HasMaxLength(64)
-                                .HasColumnType("nvarchar(64)");
+                                .HasColumnType("character varying(64)");
 
                             b1.Property<string>("ContentItemId")
                                 .IsRequired()
                                 .HasMaxLength(160)
-                                .HasColumnType("nvarchar(160)");
+                                .HasColumnType("character varying(160)");
 
                             b1.Property<string>("ContentType")
                                 .IsRequired()
                                 .HasMaxLength(64)
-                                .HasColumnType("nvarchar(64)");
+                                .HasColumnType("character varying(64)");
 
                             b1.Property<int?>("EndOffset")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int?>("EndVerse")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<string>("ParagraphId")
                                 .HasMaxLength(128)
-                                .HasColumnType("nvarchar(128)");
+                                .HasColumnType("character varying(128)");
 
                             b1.Property<int?>("StartOffset")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int?>("StartVerse")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.HasKey("AnnotationId");
 
@@ -489,31 +489,31 @@ namespace ScriptureCircle.Infrastructure.Migrations
                     b.OwnsOne("ScriptureCircle.Domain.Entities.ScriptureReference", "Reference", b1 =>
                         {
                             b1.Property<Guid>("AnnotationLinkId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("uuid");
 
                             b1.Property<string>("BookId")
                                 .IsRequired()
                                 .HasMaxLength(80)
-                                .HasColumnType("nvarchar(80)");
+                                .HasColumnType("character varying(80)");
 
                             b1.Property<string>("BookTitle")
                                 .IsRequired()
                                 .HasMaxLength(160)
-                                .HasColumnType("nvarchar(160)");
+                                .HasColumnType("character varying(160)");
 
                             b1.Property<int>("Chapter")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int?>("VerseEnd")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int?>("VerseStart")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<string>("VolumeId")
                                 .IsRequired()
                                 .HasMaxLength(80)
-                                .HasColumnType("nvarchar(80)");
+                                .HasColumnType("character varying(80)");
 
                             b1.HasKey("AnnotationLinkId");
 
@@ -559,31 +559,31 @@ namespace ScriptureCircle.Infrastructure.Migrations
                     b.OwnsOne("ScriptureCircle.Domain.Entities.ScriptureReference", "Reference", b1 =>
                         {
                             b1.Property<Guid>("LessonId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("uuid");
 
                             b1.Property<string>("BookId")
                                 .IsRequired()
                                 .HasMaxLength(80)
-                                .HasColumnType("nvarchar(80)");
+                                .HasColumnType("character varying(80)");
 
                             b1.Property<string>("BookTitle")
                                 .IsRequired()
                                 .HasMaxLength(160)
-                                .HasColumnType("nvarchar(160)");
+                                .HasColumnType("character varying(160)");
 
                             b1.Property<int>("Chapter")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int?>("VerseEnd")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int?>("VerseStart")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<string>("VolumeId")
                                 .IsRequired()
                                 .HasMaxLength(80)
-                                .HasColumnType("nvarchar(80)");
+                                .HasColumnType("character varying(80)");
 
                             b1.HasKey("LessonId");
 
@@ -610,31 +610,31 @@ namespace ScriptureCircle.Infrastructure.Migrations
                     b.OwnsOne("ScriptureCircle.Domain.Entities.ScriptureReference", "Reference", b1 =>
                         {
                             b1.Property<Guid>("NoteId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("uuid");
 
                             b1.Property<string>("BookId")
                                 .IsRequired()
                                 .HasMaxLength(80)
-                                .HasColumnType("nvarchar(80)");
+                                .HasColumnType("character varying(80)");
 
                             b1.Property<string>("BookTitle")
                                 .IsRequired()
                                 .HasMaxLength(160)
-                                .HasColumnType("nvarchar(160)");
+                                .HasColumnType("character varying(160)");
 
                             b1.Property<int>("Chapter")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int?>("VerseEnd")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int?>("VerseStart")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<string>("VolumeId")
                                 .IsRequired()
                                 .HasMaxLength(80)
-                                .HasColumnType("nvarchar(80)");
+                                .HasColumnType("character varying(80)");
 
                             b1.HasKey("NoteId");
 

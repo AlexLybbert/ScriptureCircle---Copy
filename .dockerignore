@@ -1,0 +1,7 @@
+.git
+.keys
+.config
+client/node_modules
+client/dist
+src/**/bin
+src/**/obj

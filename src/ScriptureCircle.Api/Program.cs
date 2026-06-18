@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using ScriptureCircle.Api.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 app.UseHttpsRedirection();
 app.UseCors("Client");
 app.UseAuthentication();

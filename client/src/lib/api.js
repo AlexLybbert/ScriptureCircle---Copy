@@ -198,19 +198,24 @@ export class ApiClient {
       ...options,
       headers,
     });
+    const body = await response.text();
+    let data = null;
+
+    if (body.trim()) {
+      try {
+        data = JSON.parse(body);
+      } catch {
+        throw new ApiError(`Expected JSON response from ${path}`, response.status);
+      }
+    }
 
     if (!response.ok) {
-      const body = await response.json().catch(() => ({}));
-      const message = body.message || `Request failed with ${response.status}`;
+      const message = data?.message || `Request failed with ${response.status}`;
       throw new ApiError(message, response.status);
     }
 
-    if (response.status === 204) {
-      return null;
-    }
-
-    return response.json();
+    return data;
   }
 }
 
-export const apiClient = new ApiClient();
+export const apiClient = new ApiClient(import.meta.env.VITE_API_BASE_URL ?? '');

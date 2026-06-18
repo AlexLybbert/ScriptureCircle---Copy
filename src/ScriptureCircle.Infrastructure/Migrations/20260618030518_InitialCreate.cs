@@ -11,32 +11,33 @@ namespace ScriptureCircle.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("""
-                IF OBJECT_ID(N'[ContentItems]', N'U') IS NULL
-                BEGIN
-                    CREATE TABLE [ContentItems] (
-                        [Id] nvarchar(160) NOT NULL,
-                        [ContentType] nvarchar(64) NOT NULL,
-                        [Title] nvarchar(256) NOT NULL,
-                        [SourceId] nvarchar(256) NULL,
-                        [VolumeId] nvarchar(64) NULL,
-                        [BookId] nvarchar(64) NULL,
-                        [ChapterNumber] int NULL,
-                        CONSTRAINT [PK_ContentItems] PRIMARY KEY ([Id])
-                    );
-                END;
-                """);
+            migrationBuilder.CreateTable(
+                name: "ContentItems",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "character varying(160)", maxLength: 160, nullable: false),
+                    ContentType = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    Title = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    SourceId = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    VolumeId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    BookId = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChapterNumber = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContentItems", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DisplayName = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    ProfileSlug = table.Column<string>(type: "nvarchar(140)", maxLength: 140, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    DisplayName = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    ProfileSlug = table.Column<string>(type: "character varying(140)", maxLength: 140, nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,29 +48,29 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 name: "Annotations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Reference_VolumeId = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    Reference_BookId = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    Reference_BookTitle = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Reference_Chapter = table.Column<int>(type: "int", nullable: false),
-                    Reference_VerseStart = table.Column<int>(type: "int", nullable: true),
-                    Reference_VerseEnd = table.Column<int>(type: "int", nullable: true),
-                    ContentAnchor_ContentItemId = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    ContentAnchor_ContentType = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    ContentAnchor_AnchorType = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    ContentAnchor_StartVerse = table.Column<int>(type: "int", nullable: true),
-                    ContentAnchor_EndVerse = table.Column<int>(type: "int", nullable: true),
-                    ContentAnchor_StartOffset = table.Column<int>(type: "int", nullable: true),
-                    ContentAnchor_EndOffset = table.Column<int>(type: "int", nullable: true),
-                    ContentAnchor_ParagraphId = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
-                    HighlightStyle = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    NotePlainText = table.Column<string>(type: "nvarchar(max)", maxLength: 8000, nullable: true),
-                    NoteHtml = table.Column<string>(type: "nvarchar(max)", maxLength: 16000, nullable: true),
-                    Visibility = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    ShareSlug = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Reference_VolumeId = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                    Reference_BookId = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                    Reference_BookTitle = table.Column<string>(type: "character varying(160)", maxLength: 160, nullable: false),
+                    Reference_Chapter = table.Column<int>(type: "integer", nullable: false),
+                    Reference_VerseStart = table.Column<int>(type: "integer", nullable: true),
+                    Reference_VerseEnd = table.Column<int>(type: "integer", nullable: true),
+                    ContentAnchor_ContentItemId = table.Column<string>(type: "character varying(160)", maxLength: 160, nullable: false),
+                    ContentAnchor_ContentType = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    ContentAnchor_AnchorType = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    ContentAnchor_StartVerse = table.Column<int>(type: "integer", nullable: true),
+                    ContentAnchor_EndVerse = table.Column<int>(type: "integer", nullable: true),
+                    ContentAnchor_StartOffset = table.Column<int>(type: "integer", nullable: true),
+                    ContentAnchor_EndOffset = table.Column<int>(type: "integer", nullable: true),
+                    ContentAnchor_ParagraphId = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    HighlightStyle = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    NotePlainText = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
+                    NoteHtml = table.Column<string>(type: "character varying(16000)", maxLength: 16000, nullable: true),
+                    Visibility = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    ShareSlug = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,18 +87,18 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 name: "Lessons",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedByUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Summary = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: false),
-                    Reference_VolumeId = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    Reference_BookId = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    Reference_BookTitle = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Reference_Chapter = table.Column<int>(type: "int", nullable: false),
-                    Reference_VerseStart = table.Column<int>(type: "int", nullable: true),
-                    Reference_VerseEnd = table.Column<int>(type: "int", nullable: true),
-                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "character varying(160)", maxLength: 160, nullable: false),
+                    Summary = table.Column<string>(type: "character varying(4000)", maxLength: 4000, nullable: false),
+                    Reference_VolumeId = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                    Reference_BookId = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                    Reference_BookTitle = table.Column<string>(type: "character varying(160)", maxLength: 160, nullable: false),
+                    Reference_Chapter = table.Column<int>(type: "integer", nullable: false),
+                    Reference_VerseStart = table.Column<int>(type: "integer", nullable: true),
+                    Reference_VerseEnd = table.Column<int>(type: "integer", nullable: true),
+                    IsPublic = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,13 +115,13 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 name: "Notebooks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    ShareSlug = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "character varying(160)", maxLength: 160, nullable: false),
+                    Type = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    IsPublic = table.Column<bool>(type: "boolean", nullable: false),
+                    ShareSlug = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,18 +138,18 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 name: "Notes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Reference_VolumeId = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    Reference_BookId = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    Reference_BookTitle = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Reference_Chapter = table.Column<int>(type: "int", nullable: false),
-                    Reference_VerseStart = table.Column<int>(type: "int", nullable: true),
-                    Reference_VerseEnd = table.Column<int>(type: "int", nullable: true),
-                    Body = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: false),
-                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Reference_VolumeId = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                    Reference_BookId = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                    Reference_BookTitle = table.Column<string>(type: "character varying(160)", maxLength: 160, nullable: false),
+                    Reference_Chapter = table.Column<int>(type: "integer", nullable: false),
+                    Reference_VerseStart = table.Column<int>(type: "integer", nullable: true),
+                    Reference_VerseEnd = table.Column<int>(type: "integer", nullable: true),
+                    Body = table.Column<string>(type: "character varying(4000)", maxLength: 4000, nullable: false),
+                    IsPublic = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -165,13 +166,13 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 name: "Subscriptions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
-                    Plan = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    StartedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    EndsAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
+                    Plan = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    StartedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    EndsAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -188,9 +189,9 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,9 +208,9 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 name: "UserFollows",
                 columns: table => new
                 {
-                    SubscriberUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatorUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    SubscriberUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatorUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -232,15 +233,15 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 name: "AnnotationLinks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AnnotationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Reference_VolumeId = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    Reference_BookId = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    Reference_BookTitle = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Reference_Chapter = table.Column<int>(type: "int", nullable: false),
-                    Reference_VerseStart = table.Column<int>(type: "int", nullable: true),
-                    Reference_VerseEnd = table.Column<int>(type: "int", nullable: true),
-                    Label = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    AnnotationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Reference_VolumeId = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                    Reference_BookId = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
+                    Reference_BookTitle = table.Column<string>(type: "character varying(160)", maxLength: 160, nullable: false),
+                    Reference_Chapter = table.Column<int>(type: "integer", nullable: false),
+                    Reference_VerseStart = table.Column<int>(type: "integer", nullable: true),
+                    Reference_VerseEnd = table.Column<int>(type: "integer", nullable: true),
+                    Label = table.Column<string>(type: "character varying(160)", maxLength: 160, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -257,9 +258,9 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 name: "NotebookAnnotations",
                 columns: table => new
                 {
-                    NotebookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AnnotationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SortOrder = table.Column<int>(type: "int", nullable: false)
+                    NotebookId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AnnotationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SortOrder = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -282,8 +283,8 @@ namespace ScriptureCircle.Infrastructure.Migrations
                 name: "AnnotationTag",
                 columns: table => new
                 {
-                    AnnotationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    AnnotationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TagId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
