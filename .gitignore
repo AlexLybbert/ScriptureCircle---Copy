@@ -1,0 +1,59 @@
+# .NET / C# build artifacts
+bin/
+obj/
+*.dll
+*.exe
+*.o
+*.so
+*.dylib
+*.runtimeconfig.json
+*.pdb
+*.dbmdl
+*.mdf
+*.ldf
+
+# Visual Studio artifacts
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+# Node.js / npm
+node_modules/
+package-lock.json
+*.npm
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+
+# Test results
+test-results/
+coverage/
+*.trx
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+Thumbs.db
+.DS_Store
+*.tmp

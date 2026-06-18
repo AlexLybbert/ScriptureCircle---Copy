@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ScriptureCircle helps readers sign in, save scripture study notes, and organize annotations."
+    />
+    <title>ScriptureCircle | Sign in and study</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/dashboard" data-route data-protected-link>
+        <span class="brand-mark" aria-hidden="true">SC</span>
+        <span>
+          <span class="brand-name">ScriptureCircle</span>
+          <span class="brand-tagline">Study annotations</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="/study/oldtestament/genesis/1" data-route>Scripture Reader</a>
+        <a href="/dashboard" data-route data-protected-link>Dashboard</a>
+        <a href="/login" data-route>Sign in</a>
+        <a href="/register" data-route>Create account</a>
+        <button class="text-button" type="button" data-sign-out>Sign out</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="auth-layout" data-auth-panel>
+        <div class="auth-intro">
+          <p class="eyebrow">Personal scripture study</p>
+          <h1 data-auth-title>Sign in to ScriptureCircle</h1>
+          <p data-auth-copy>
+            Continue your scripture study with saved annotations and notebooks.
+          </p>
+          <ul class="feature-list" aria-label="Account features">
+            <li>Save private notes and highlights.</li>
+            <li>Return to recent scripture study.</li>
+            <li>Prepare notebooks for lessons and talks.</li>
+          </ul>
+        </div>
+
+        <div class="auth-card">
+          <p class="status-message" data-auth-message hidden></p>
+
+          <form class="auth-form" data-login-form>
+            <div class="field">
+              <label for="login-email">Email</label>
+              <input id="login-email" name="login-email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="login-password">Password</label>
+              <input id="login-password" name="login-password" type="password" autocomplete="current-password" required />
+            </div>
+            <button class="primary-button" type="submit">Sign in</button>
+            <p class="form-switch">
+              New here?
+              <a href="/register" data-route>Create an account</a>
+            </p>
+          </form>
+
+          <form class="auth-form" data-register-form hidden>
+            <div class="field">
+              <label for="display-name">Display name</label>
+              <input id="display-name" name="display-name" type="text" autocomplete="name" minlength="2" required />
+            </div>
+            <div class="field">
+              <label for="register-email">Email</label>
+              <input id="register-email" name="register-email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="register-password">Password</label>
+              <input
+                id="register-password"
+                name="register-password"
+                type="password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              />
+            </div>
+            <button class="primary-button" type="submit">Create account</button>
+            <p class="form-switch">
+              Already have an account?
+              <a href="/login" data-route>Sign in</a>
+            </p>
+          </form>
+        </div>
+      </section>
+
+      <section class="dashboard-layout" data-dashboard-panel hidden>
+        <div class="dashboard-heading" data-user-summary></div>
+        <p class="status-message" data-dashboard-message hidden></p>
+        <div class="dashboard-grid">
+          <article class="dashboard-card">
+            <h2>Continue Study</h2>
+            <p data-continue-study-copy>
+              Open the scripture reader and use this account session to save annotations, notes, and highlights.
+            </p>
+            <a class="secondary-link" href="/study/oldtestament/genesis/1" data-route data-continue-study-link>
+              Open Genesis 1
+            </a>
+          </article>
+          <article class="dashboard-card">
+            <h2>Study Overview</h2>
+            <dl class="stat-list" data-dashboard-stats>
+              <div>
+                <dt>Annotations</dt>
+                <dd>0</dd>
+              </div>
+              <div>
+                <dt>Notebooks</dt>
+                <dd>0</dd>
+              </div>
+              <div>
+                <dt>Lessons</dt>
+                <dd>0</dd>
+              </div>
+            </dl>
+          </article>
+          <article class="dashboard-card">
+            <h2>Signed-in User</h2>
+            <p>Current user: <strong data-current-user>Guest</strong></p>
+            <button class="secondary-button" type="button" data-sign-out>Sign out</button>
+          </article>
+        </div>
+
+        <section class="workspace-panel" aria-labelledby="dashboard-search-heading">
+          <h2 id="dashboard-search-heading">Search</h2>
+          <p class="muted">Search your saved notes, highlights, notebooks, lessons, and followed public activity.</p>
+          <form class="workspace-form dashboard-search-form" data-dashboard-search-form>
+            <div class="field">
+              <label for="dashboard-search">Search terms</label>
+              <input
+                id="dashboard-search"
+                name="dashboard-search"
+                type="search"
+                placeholder="creation, faith, Genesis"
+                autocomplete="off"
+              />
+            </div>
+            <div class="field">
+              <label for="dashboard-search-scope">Search scope</label>
+              <select id="dashboard-search-scope" name="dashboard-search-scope">
+                <option value="all">All study items</option>
+                <option value="annotations">Notes and highlights</option>
+                <option value="notebooks">Notebooks</option>
+                <option value="lessons">Lessons</option>
+                <option value="subscriptions">Followed activity</option>
+              </select>
+            </div>
+            <button class="primary-button" type="submit">Search dashboard</button>
+          </form>
+          <p class="status-message" data-dashboard-search-message hidden></p>
+          <div class="workspace-list" data-dashboard-search-results></div>
+        </section>
+
+        <section class="workspace-panel" aria-labelledby="recent-activity-heading">
+          <h2 id="recent-activity-heading">Recent Activity</h2>
+          <p class="muted">Your latest saved notes and highlights across scripture chapters.</p>
+          <div class="workspace-list" data-recent-annotations></div>
+        </section>
+
+        <div class="workspace-grid">
+          <section class="workspace-panel" aria-labelledby="notebooks-heading">
+            <h2 id="notebooks-heading">Notebooks</h2>
+            <p class="muted">Collect notes and highlights into study sets, talks, topics, or lessons.</p>
+            <p class="status-message" data-notebook-message hidden></p>
+
+            <form class="workspace-form" data-notebook-form>
+              <div class="field">
+                <label for="notebook-title">Notebook title</label>
+                <input id="notebook-title" name="notebook-title" type="text" maxlength="120" required />
+              </div>
+              <div class="field">
+                <label for="notebook-type">Notebook type</label>
+                <select id="notebook-type" name="notebook-type">
+                  <option value="Personal">Personal</option>
+                  <option value="Lesson">Lesson</option>
+                  <option value="Talk">Talk</option>
+                  <option value="Topic">Topic</option>
+                </select>
+              </div>
+              <label class="check-row">
+                <input type="checkbox" name="notebook-public" />
+                <span>Make notebook public</span>
+              </label>
+              <button class="primary-button" type="submit">Create notebook</button>
+            </form>
+
+            <div class="workspace-list" data-notebook-list></div>
+          </section>
+
+          <section class="workspace-panel" aria-labelledby="lessons-heading">
+            <h2 id="lessons-heading">Lessons</h2>
+            <p class="muted">Draft a lesson around a scripture chapter and choose whether it is private or public.</p>
+            <p class="status-message" data-lesson-message hidden></p>
+
+            <form class="workspace-form" data-lesson-form>
+              <div class="field">
+                <label for="lesson-title">Lesson title</label>
+                <input id="lesson-title" name="lesson-title" type="text" maxlength="140" required />
+              </div>
+              <div class="field">
+                <label for="lesson-summary">Lesson summary</label>
+                <textarea id="lesson-summary" name="lesson-summary" rows="4" maxlength="1000" required></textarea>
+              </div>
+              <div class="selection-range" aria-label="Lesson scripture reference">
+                <div class="field">
+                  <label for="lesson-volume">Volume</label>
+                  <select id="lesson-volume" data-lesson-volume name="lesson-volume"></select>
+                </div>
+                <div class="field">
+                  <label for="lesson-book">Book</label>
+                  <select id="lesson-book" data-lesson-book name="lesson-book"></select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="lesson-chapter">Chapter</label>
+                <select id="lesson-chapter" data-lesson-chapter name="lesson-chapter"></select>
+              </div>
+              <label class="check-row">
+                <input type="checkbox" name="lesson-public" />
+                <span>Make lesson public</span>
+              </label>
+              <button class="primary-button" type="submit">Create lesson</button>
+            </form>
+
+            <div class="workspace-list" data-lesson-list></div>
+          </section>
+        </div>
+
+        <section class="workspace-panel" aria-labelledby="subscription-feed-heading">
+          <h2 id="subscription-feed-heading">Subscription Feed</h2>
+          <p class="muted">Public notes and highlights from readers you follow.</p>
+          <p class="status-message" data-subscription-message hidden></p>
+          <div class="workspace-list" data-subscription-feed></div>
+        </section>
+      </section>
+
+      <section class="profile-layout" data-profile-panel hidden>
+        <div class="profile-heading" data-profile-summary>
+          <p class="eyebrow">Public Profile</p>
+          <h1>Reader Profile</h1>
+          <p class="muted">Loading public study activity...</p>
+        </div>
+        <p class="status-message" data-profile-message hidden></p>
+
+        <div class="workspace-grid">
+          <section class="workspace-panel" aria-labelledby="profile-annotations-heading">
+            <h2 id="profile-annotations-heading">Public Notes and Highlights</h2>
+            <div class="workspace-list" data-profile-annotations></div>
+          </section>
+
+          <section class="workspace-panel" aria-labelledby="profile-notebooks-heading">
+            <h2 id="profile-notebooks-heading">Public Notebooks</h2>
+            <div class="workspace-list" data-profile-notebooks></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="reader-layout" data-reader-panel hidden>
+        <aside class="reader-controls" aria-label="Scripture navigation">
+          <p class="eyebrow">Scripture Reader</p>
+          <h1 data-reader-title>Scripture Reader</h1>
+          <p class="muted" data-reader-summary>Select a volume, book, and chapter.</p>
+
+          <div class="field">
+            <label for="volume-select">Volume</label>
+            <select id="volume-select" data-volume-select></select>
+          </div>
+
+          <div class="field">
+            <label for="book-select">Book</label>
+            <select id="book-select" data-book-select></select>
+          </div>
+
+          <div class="field">
+            <label for="chapter-select">Chapter</label>
+            <select id="chapter-select" data-chapter-select></select>
+          </div>
+
+          <nav class="chapter-nav" aria-label="Chapter navigation">
+            <a class="secondary-link" href="/" data-route data-previous-chapter>Previous</a>
+            <a class="secondary-link" href="/" data-route data-next-chapter>Next</a>
+          </nav>
+
+          <section class="selection-panel" data-selection-panel aria-live="polite">
+            <p class="eyebrow">Selected Verse</p>
+            <h2 data-selection-label>No verse selected</h2>
+            <p class="muted" data-selection-help>Click or press Enter on a verse to select it.</p>
+
+            <div class="selection-range" aria-label="Selected verse range">
+              <div class="field">
+                <label for="selection-start">Start</label>
+                <select id="selection-start" data-selection-start disabled></select>
+              </div>
+              <div class="field">
+                <label for="selection-end">End</label>
+                <select id="selection-end" data-selection-end disabled></select>
+              </div>
+            </div>
+
+            <button class="secondary-button" type="button" data-clear-selection disabled>Clear selection</button>
+
+            <div class="field">
+              <label for="annotation-tags">Tags</label>
+              <input
+                id="annotation-tags"
+                name="annotation-tags"
+                type="text"
+                list="tag-suggestions"
+                data-annotation-tags
+                placeholder="faith, creation, question"
+                disabled
+              />
+              <datalist id="tag-suggestions" data-tag-suggestions></datalist>
+            </div>
+
+            <div class="field">
+              <label for="annotation-crossrefs">Cross references</label>
+              <input
+                id="annotation-crossrefs"
+                name="annotation-crossrefs"
+                type="text"
+                data-annotation-crossrefs
+                placeholder="Genesis 1:1, John 1:1-3"
+                disabled
+              />
+            </div>
+
+            <div class="field">
+              <label for="annotation-links">Resource links</label>
+              <input
+                id="annotation-links"
+                name="annotation-links"
+                type="text"
+                data-annotation-links
+                placeholder="Bible Dictionary | https://example.com"
+                disabled
+              />
+            </div>
+
+            <div class="field">
+              <label for="annotation-visibility">Visibility</label>
+              <select id="annotation-visibility" data-annotation-visibility disabled>
+                <option value="Private">Private</option>
+                <option value="Unlisted">Unlisted share link</option>
+                <option value="Public">Public profile</option>
+              </select>
+            </div>
+
+            <form class="highlight-form" data-highlight-form>
+              <fieldset data-highlight-fieldset disabled>
+                <legend>Highlight color</legend>
+                <label class="highlight-choice highlight-yellow">
+                  <input type="radio" name="highlight-style" value="Yellow" checked />
+                  <span>Yellow</span>
+                </label>
+                <label class="highlight-choice highlight-blue">
+                  <input type="radio" name="highlight-style" value="Blue" />
+                  <span>Blue</span>
+                </label>
+                <label class="highlight-choice highlight-green">
+                  <input type="radio" name="highlight-style" value="Green" />
+                  <span>Green</span>
+                </label>
+                <label class="highlight-choice highlight-red">
+                  <input type="radio" name="highlight-style" value="Red" />
+                  <span>Red</span>
+                </label>
+                <label class="highlight-choice highlight-underline">
+                  <input type="radio" name="highlight-style" value="Underline" />
+                  <span>Underline</span>
+                </label>
+              </fieldset>
+              <button class="primary-button" type="submit" data-save-highlight disabled>Save highlight</button>
+            </form>
+
+            <p class="muted highlight-summary" data-highlight-summary>Select a verse to highlight it.</p>
+
+            <form class="note-form" data-note-form>
+              <div class="field">
+                <label for="selection-note">Study note</label>
+                <textarea
+                  id="selection-note"
+                  name="note-text"
+                  data-note-text
+                  rows="4"
+                  maxlength="1000"
+                  placeholder="Write a private note for the selected verse or phrase."
+                  disabled
+                ></textarea>
+              </div>
+              <button class="primary-button" type="submit" data-save-note disabled>Save note</button>
+            </form>
+
+            <section class="notes-panel" aria-label="Saved notes for this chapter">
+              <h3>Chapter Notes</h3>
+              <div class="field">
+                <label for="tag-filter">Filter by tag</label>
+                <select id="tag-filter" data-tag-filter disabled>
+                  <option value="">All tags</option>
+                </select>
+              </div>
+              <p class="muted note-summary" data-note-summary>Select a verse to add a note.</p>
+              <div class="note-list" data-note-list></div>
+            </section>
+          </section>
+        </aside>
+
+        <article class="reader-card" aria-live="polite">
+          <div class="reader-toolbar">
+            <p class="status-message" data-reader-message hidden></p>
+            <span class="reader-loading" data-reader-loading hidden>Loading chapter...</span>
+          </div>
+          <div class="scripture-text" data-reader-verses></div>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
