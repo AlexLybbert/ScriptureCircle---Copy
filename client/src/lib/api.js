@@ -10,7 +10,7 @@ export class ApiError extends Error {
 
 export class ApiClient {
   constructor(baseUrl = '') {
-    this.baseUrl = baseUrl;
+    this.baseUrl = baseUrl.replace(/\/+$/, '');
   }
 
   async register({ displayName, email, password }) {

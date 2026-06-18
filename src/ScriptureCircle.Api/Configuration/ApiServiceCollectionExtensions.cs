@@ -21,7 +21,7 @@ internal static class ApiServiceCollectionExtensions
         services.AddCors(options =>
         {
             options.AddPolicy("Client", policy =>
-                policy.WithOrigins(configuration.GetSection("ClientOrigins").Get<string[]>() ?? ["http://localhost:5173"])
+                policy.WithOrigins(GetClientOrigins(configuration))
                     .AllowAnyHeader()
                     .AllowAnyMethod());
         });
@@ -32,6 +32,15 @@ internal static class ApiServiceCollectionExtensions
         services.AddAuthorization();
 
         return services;
+    }
+
+    private static string[] GetClientOrigins(IConfiguration configuration)
+    {
+        return (configuration.GetSection("ClientOrigins").Get<string[]>() ?? ["http://localhost:5173"])
+            .Select(origin => origin.Trim().TrimEnd('/'))
+            .Where(origin => !string.IsNullOrWhiteSpace(origin))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
     }
 
     private static IServiceCollection AddApplicationServices(this IServiceCollection services)

@@ -25,16 +25,20 @@ services:
       - key: Jwt__SigningKey
         generateValue: true
       - key: ClientOrigins__0
-        sync: false
+        value: https://scripturecircle-copy.onrender.com
 
   - type: web
     name: scripture-circle-client
     runtime: static
     buildCommand: cd client && npm ci && npm run build
     staticPublishPath: client/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
     envVars:
       - key: VITE_API_BASE_URL
-        sync: false
+        value: https://scripturecircle-copy-web-service.onrender.com
 
 databases:
   - name: scripture-circle-db
